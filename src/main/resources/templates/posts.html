@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- Definir o th como componente de acesso do Thymeleaf -->
+<html lang="pt" xmlns:th="https://thymeleaf.org">
+<head>
+    <title>MyCodeBlog</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="style/styleCss.css"/>-->
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1" style="font-weight: bold;">MyCodeBlog</span>
+                <a href="/newpost" class="btn btn-primary" role="button">Novo Post</a>
+            </div>
+        </nav>
+    </header>
+
+    <section>
+        <div class="container" style="width: 60%; padding-bottom: 30px;">
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="background-color: white; padding-left: 0px; padding-top: 2%;">
+                    <li class="breadcrumb-item active" aria-current="page">Posts</li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm bg-white rounded" style="margin-top: 20px;" th:each="post : ${posts}">
+                <div class="card-body">
+                    <!-- Constroi url para acessar o detalhe -->
+                    <a th:href="${(#mvc.url('CC#getPostDetails').arg(0, post.id)).build()}">
+                        <h4 class="card-title" style="font-weight: bold; color: black; padding-top: 5px;">
+                            <span th:text="${post.titulo}"></span>
+                        </h4>
+                    </a>
+                    <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">
+                        <span th:text="${post.autor}"></span> |
+                        <span th:text="${#temporals.format(post.data, 'dd-MM-yyyy')}"></span>
+                    </p>
+                    <p class="card-text">
+                        <!-- Abreviar texto para 400 caracteres -->
+                        <span th:utext="${#strings.abbreviate(post.texto, 400)}"></span>
+                    </p>
+                    <div style="float: right;">
+                        <a th:href="@{/editpost/{id}(id=${post.id})}" role="button" class="btn btn-warning">
+                                <span>Editar</span>
+                        </a>
+                        <a th:href="@{/deletepost/{id}(id=${post.id})}" class="btn btn-danger" role="button">
+                                <span>Excluir</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
